@@ -1,0 +1,42 @@
+# revisado y aprovado por Marcos Escobar
+# Salidas de compilación de todos los proyectos del TI (Maven/NetBeans, .NET, Visual Studio).
+# Son reglas generales para que sigan funcionando aunque se renombren las carpetas.
+target/
+bin/
+obj/
+.vs/
+*.user
+
+# Claude Code: local state and personal settings
+.claude/settings.local.json
+.claude/worktrees/
+.claude/projects/
+.claude/todos/
+.claude/statsig/
+.claude/ide/
+*.claude.local.md
+
+# Gentle AI / Agent Teams Lite: skill registry, cache and runtime state
+.atl/
+.gentle-ai/
+.pi/gentle-ai/
+odd/
+
+# CodeGraph: per-worktree SQLite index (rebuilt by `codegraph init`)
+.codegraph/
+
+# Engram persistent memory local data
+.engram/
+
+# Other AI coding agents' local state
+.opencode/
+.codex/
+.cursor/
+.windsurf/
+.gemini/
+
+# PowerDesigner: copias de respaldo automáticas
+*.oob
+
+# Local test data for the EurekaBank database (personal users and passwords)
+/03. BDD/EurekaBank_MySQL_datos.sql
