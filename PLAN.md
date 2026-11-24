@@ -102,7 +102,7 @@ Como en Java (D1, E1, F1, G1), las capas `modelos`, `servicios`, `controlador`, 
 | `config/ConfigServidor` (`URL_BASE`, `TIMEOUT_MS`) | `config/ConfigServidor.cs` (`URL_BASE`, `TIMEOUT_SEGUNDOS = 15`, del diagrama .NET) leída de `appsettings.json` junto al ejecutable |
 | `vista/VistaBase` + 8 interfaces | `vista/*.cs`: mismas interfaces y métodos (`MostrarMensaje`, `LeerPais`, ...) |
 
-Pruebas de cada cliente: xUnit en `pruebas/`, con `VistaFalsa` y un `ServidorFalso` HTTP real (`HttpListener` en un puerto libre), igual que el `HttpServer` de las pruebas Java.
+Pruebas de cada cliente: xUnit en `pruebas/` (proyecto aparte, excluido del `.csproj` principal), con `pruebas/dobles/VistaFalsa` y un `pruebas/dobles/ServidorFalso` HTTP real (`TcpListener` en un puerto libre), igual que el `HttpServer` de las pruebas Java.
 
 ### 4.1 Escritorio WPF: `04. CLIESC/ESC_COUNTRYAPI_DOTNET_RESTFul`
 
@@ -115,9 +115,10 @@ Pruebas de cada cliente: xUnit en `pruebas/`, con `VistaFalsa` y un `ServidorFal
 | `vista/FormularioPaisDialogo` | `vista/FormularioPaisDialogo.xaml(.cs)` (ventana modal) |
 | `vista/Estilos` | `vista/Estilos.xaml` (diccionario de recursos con la paleta) |
 | `vista/Alerta`, `IndicadorServidor` | `vista/Alerta.xaml`, `vista/IndicadorServidor.xaml` |
-| `vista/TablaModelo` (`JTable`) | `DataGrid` con columnas declaradas en XAML |
-| `servidor.properties` | `appsettings.json` junto al `.exe` |
-| 3 clases de prueba (49) | `pruebas/` xUnit (49) |
+| `vista/TablaModelo` (`JTable`) | `DataGrid` con columnas declaradas en XAML; formatos en `vista/Estilos.cs` |
+| `JOptionPane.showConfirmDialog` | `vista/DialogoConfirmacion.xaml(.cs)` con el estilo de la aplicación |
+| `servidor.properties` (`-Dcountryapi.config`) | `appsettings.json` junto al `.exe` (variable `COUNTRYAPI_CONFIG`) |
+| 3 clases de prueba (49) | `pruebas/` xUnit (49): `ValidadorDatosTest`, `ServiciosTest`, `ControladoresTest` y `pruebas/dobles/` |
 
 ### 4.2 Móvil MAUI: `04. CLIMOV/MOV_COUNTRYAPI_DOTNET_RESTFul`
 

@@ -136,3 +136,16 @@ Solo lo que tuvo que cambiar respecto de Java por la tecnología; ninguna decisi
   - 14 casos más para el convertidor de `double` (`DoubleFormatoJava`), que no existe en Java.
   - El servidor HTTP falso es un `TcpListener` mínimo, en lugar del `HttpServer` del JDK.
 - **I6. Rutas sin distinguir mayúsculas.** ASP.NET Core acepta `/api/paises` además de `/api/Paises`; JAX-RS solo la segunda. Los clientes usan siempre la forma documentada, así que no cambia nada para ellos.
+
+## J. Fase 2 (escritorio WPF)
+
+Solo lo que tuvo que cambiar respecto de Swing por la tecnología; las pantallas, los textos, las validaciones y los mensajes son los de Java.
+
+- **J1. Capas comunes traducidas una vez.** `modelos`, `config`, `servicios`, `controlador` y las interfaces de `vista` quedan listas para copiarse a MAUI, consola y web. Solo cambian las vistas.
+- **J2. Cliente asíncrono (H11).** Servicios y controladores devuelven `Task`; las interfaces de vista siguen siendo síncronas, como en Java. `VentanaPrincipal.Ejecutar` hace lo que hacía el `SwingWorker`: muestra la barra de progreso, bloquea los clics y muestra en pantalla cualquier error inesperado sin cerrar la aplicación.
+- **J3. Configuración.** `servidor.properties` pasa a `appsettings.json` (`Servidor:Url`), que se copia junto al `.exe`. `-Dcountryapi.config` pasa a la variable de entorno `COUNTRYAPI_CONFIG`. El orden de búsqueda es el mismo de Java.
+- **J4. Diálogos.** `JOptionPane.showConfirmDialog` no tiene equivalente con estilo en WPF (`MessageBox` usa el aspecto del sistema). `DialogoConfirmacion` es una ventana modal con el mismo título, texto y botones, y la paleta de la aplicación.
+- **J5. Tablas.** `TablaModelo` (modelo de `JTable`) desaparece: el `DataGrid` declara sus columnas en XAML y usa los convertidores `FormatoNumero` y `SiNo` de `vista/Estilos.cs`. Los números se formatean con la cultura `es-EC` (`17.643.060`, `1.285.216,25`), como el `NumberFormat` de Java.
+- **J6. Filtros de región.** Los chips son `RadioButton` y vuelven a consultar con el evento `Checked`, no con `Click`. Así responden también al teclado y a la automatización de la interfaz (UI Automation). Volver a pulsar el chip que ya está elegido no repite la consulta; el resultado sería el mismo.
+- **J7. Pruebas.** Las 49 de Java, traducidas a xUnit con los mismos casos, en `pruebas/` (proyecto aparte, excluido del `.csproj`). Los dobles van en `pruebas/dobles/`: `VistaFalsa` y `ServidorFalso` (`TcpListener` mínimo en lugar del `HttpServer` del JDK).
+- **J8. Revisión visual.** Se recorrieron todas las pantallas contra el servidor .NET y la base del seed: inicio de sesión (con error), menú, Países, Buscar y filtrar (filtro Europa → 2 países), Reportes, Universidades, Consultar país en la API e Importar países.
