@@ -1,0 +1,76 @@
+# =============================================================
+# Sistema CountryAPI · TI.2.2 · Base de datos SQL Server 2022 para pruebas
+#
+# Levanta SQL Server 2022 y, la primera vez, crea la base ApiPaisesDB:
+# el servicio «inicializar» espera a que el motor responda y ejecuta
+# init.sql y después seed.sql con sqlcmd. Si la base ya existe no hace
+# nada, así que los datos se conservan entre reinicios (igual que el
+# MySQL de TI.2.1, que solo carga los scripts al crear el volumen).
+#
+#   Iniciar:              docker compose up -d
+#   Ver si está lista:    docker compose ps -a   («inicializar» termina con Exited (0))
+#   Ver la carga:         docker compose logs inicializar
+#   Consola SQL:          docker compose exec sqlserver /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "CountryApi#2026" -d ApiPaisesDB
+#   Detener:              docker compose down
+#   Reiniciar desde cero: docker compose down -v && docker compose up -d
+#
+# Variables opcionales (en un archivo .env junto a este o en el entorno):
+#   SQLSERVER_SA_PASSWORD  clave de sa         (por defecto: CountryApi#2026, solo para pruebas locales)
+#   SQLSERVER_PORT         puerto en el host   (por defecto: 1433)
+# Si cambia la clave, cambie también la cadena de conexión del servidor
+# (ConnectionStrings:ApiPaisesDB o la variable ConnectionStrings__ApiPaisesDB).
+# =============================================================
+name: countryapi-dotnet
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: countryapi-sqlserver
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQLSERVER_SA_PASSWORD:-CountryApi#2026}
+      MSSQL_PID: Developer
+      # Misma zona horaria que el MySQL de TI.2.1: SYSDATETIME() da la hora de Ecuador.
+      TZ: America/Guayaquil
+    ports:
+      - "${SQLSERVER_PORT:-1433}:1433"
+    volumes:
+      - datos_sqlserver:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" -b -o /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  # Servicio de un solo uso: carga init.sql y seed.sql si la base todavía no existe.
+  inicializar:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: countryapi-sqlserver-init
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      MSSQL_SA_PASSWORD: ${SQLSERVER_SA_PASSWORD:-CountryApi#2026}
+    volumes:
+      - ./init.sql:/scripts/init.sql:ro
+      - ./seed.sql:/scripts/seed.sql:ro
+    restart: "no"
+    entrypoint:
+      - /bin/bash
+      - -c
+      # -f 65001 lee los scripts como UTF-8: sin esto las tildes quedan dañadas («AmÃ©rica»).
+      - |
+        SQLCMD="/opt/mssql-tools18/bin/sqlcmd -C -S sqlserver -U sa -P $$MSSQL_SA_PASSWORD -b -f 65001"
+        existe=$$($$SQLCMD -h -1 -W -Q "SET NOCOUNT ON; SELECT CASE WHEN DB_ID(N'ApiPaisesDB') IS NULL THEN 0 ELSE 1 END")
+        if [ "$$(echo $$existe | tr -d '[:space:]')" = "1" ]; then
+          echo "La base ApiPaisesDB ya existe; no se vuelve a cargar."
+          exit 0
+        fi
+        echo "Creando ApiPaisesDB (init.sql)..." && $$SQLCMD -i /scripts/init.sql \
+          && echo "Cargando los datos de prueba (seed.sql)..." && $$SQLCMD -i /scripts/seed.sql \
+          && echo "Base ApiPaisesDB lista."
+
+volumes:
+  datos_sqlserver:
