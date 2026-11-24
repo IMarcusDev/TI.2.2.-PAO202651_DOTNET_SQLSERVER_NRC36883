@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PantallaBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:v="clr-namespace:ec.edu.monster.vista"
+                x:Class="ec.edu.monster.vista.BusquedaPantalla">
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+        <VerticalStackLayout Padding="16,16,16,0">
+            <Label Style="{StaticResource Suave}"
+                   Text="Combine nombre, capital y región. Al elegir una región la lista se actualiza al momento." />
+            <v:Aviso x:Name="AvisoPantalla" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Margin="0,12,0,0">
+                <v:Campo x:Name="CampoNombre" Etiqueta="Nombre" TipoRetorno="Next" BotonBorrar="True" />
+                <v:Campo x:Name="CampoCapital" Grid.Column="1" Etiqueta="Capital" TipoRetorno="Search" BotonBorrar="True" />
+            </Grid>
+            <Button x:Name="BotonBuscar" Style="{StaticResource BotonPrimario}" Text="Buscar" Margin="0,8,0,0" />
+            <Label Style="{StaticResource Suave}" Text="Región" FontFamily="sans-serif-medium"
+                   TextColor="{StaticResource Texto}" Margin="0,12,0,0" />
+        </VerticalStackLayout>
+
+        <!-- Filtros de región: al elegir uno se vuelve a consultar -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout x:Name="Filtros" Spacing="8" Padding="16,8" />
+        </ScrollView>
+
+        <Label x:Name="TotalBusqueda" Grid.Row="2" Style="{StaticResource Subtitulo}" FontSize="15" Margin="16,4,16,8" />
+
+        <CollectionView x:Name="ListaBusqueda" Grid.Row="3">
+            <CollectionView.Footer>
+                <BoxView HeightRequest="16" Color="Transparent" />
+            </CollectionView.Footer>
+        </CollectionView>
+    </Grid>
+</v:PantallaBase>

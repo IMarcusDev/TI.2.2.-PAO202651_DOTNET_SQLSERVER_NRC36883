@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Página única de la app (la PrincipalActivity de Android): barra azul, la pantalla actual,
+     la barra de progreso, la capa que bloquea los toques y la capa de diálogos. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:v="clr-namespace:ec.edu.monster.vista"
+             x:Class="ec.edu.monster.vista.PaginaPrincipal"
+             BackgroundColor="{StaticResource Fondo}">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Barra superior azul: título, usuario, estado del servidor y cerrar sesión.
+             Se oculta en la pantalla de inicio de sesión. -->
+        <VerticalStackLayout x:Name="Encabezado" BackgroundColor="{StaticResource Azul}" IsVisible="False">
+            <Grid ColumnDefinitions="Auto,*,Auto" MinimumHeightRequest="56" Padding="4,4">
+                <ImageButton x:Name="BotonVolver" Style="{StaticResource BotonBarra}" Source="ic_volver_blanco.png"
+                             SemanticProperties.Description="Menú principal" IsVisible="False" Clicked="AlVolver" />
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="12,0">
+                    <Label x:Name="TituloBarra" Text="CountryAPI" TextColor="{StaticResource Blanco}"
+                           FontSize="20" FontFamily="sans-serif-medium" SemanticProperties.HeadingLevel="Level1" />
+                    <Label x:Name="SubtituloBarra" TextColor="{StaticResource TextoSobreAzul}" FontSize="14" />
+                </VerticalStackLayout>
+                <ImageButton Grid.Column="2" Style="{StaticResource BotonBarra}" Source="ic_salir_blanco.png"
+                             SemanticProperties.Description="Cerrar sesión" Clicked="AlCerrarSesion" />
+            </Grid>
+            <v:IndicadorServidor x:Name="IndicadorBarra" SobreAzul="True" BackgroundColor="{StaticResource AzulOscuro}"
+                                 Padding="16,4" />
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="1">
+            <!-- Aquí se muestran el inicio de sesión, el menú y cada módulo -->
+            <Grid x:Name="Contenedor" />
+
+            <v:BarraProgreso x:Name="Progreso" VerticalOptions="Start" />
+
+            <!-- Capa transparente que impide tocar la pantalla mientras se procesa una petición -->
+            <BoxView x:Name="Bloqueo" Color="Transparent" IsVisible="False">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+        </Grid>
+
+        <!-- Diálogos (formulario de país, confirmaciones, cambiar servidor), como los de Material -->
+        <Grid x:Name="CapaDialogo" Grid.RowSpan="2" BackgroundColor="#73000000" IsVisible="False">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="AlTocarFueraDelDialogo" />
+            </Grid.GestureRecognizers>
+            <Border x:Name="TarjetaDialogo" BackgroundColor="{StaticResource Blanco}" StrokeThickness="0"
+                    StrokeShape="RoundRectangle 16" Margin="24,32" Padding="24,20,16,8"
+                    VerticalOptions="Center" MaximumWidthRequest="560">
+                <Border.GestureRecognizers>
+                    <!-- Un toque dentro de la tarjeta no la cierra -->
+                    <TapGestureRecognizer />
+                </Border.GestureRecognizers>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                    <Label x:Name="TituloDialogo" FontSize="20" FontFamily="sans-serif-medium" Margin="0,0,8,12"
+                           SemanticProperties.HeadingLevel="Level2" />
+                    <Label x:Name="MensajeDialogo" Grid.Row="1" FontSize="15" TextColor="{StaticResource TextoSuave}"
+                           Margin="0,0,8,8" />
+                    <ScrollView x:Name="ContenidoDialogo" Grid.Row="2" Margin="0,0,8,0" />
+                    <HorizontalStackLayout Grid.Row="3" HorizontalOptions="End" Spacing="4" Margin="0,12,0,0">
+                        <Button x:Name="BotonCancelarDialogo" Style="{StaticResource BotonTexto}" Clicked="AlCancelarDialogo" />
+                        <Button x:Name="BotonAceptarDialogo" Style="{StaticResource BotonTexto}" Clicked="AlAceptarDialogo" />
+                    </HorizontalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

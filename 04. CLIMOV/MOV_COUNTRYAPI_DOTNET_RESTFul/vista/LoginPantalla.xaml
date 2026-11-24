@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PantallaBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:v="clr-namespace:ec.edu.monster.vista"
+                x:Class="ec.edu.monster.vista.LoginPantalla">
+    <ScrollView>
+        <VerticalStackLayout>
+
+            <!-- Cabecera azul con la marca -->
+            <VerticalStackLayout BackgroundColor="{StaticResource Azul}" Padding="24,40,24,76">
+                <Border BackgroundColor="{StaticResource AzulOscuro}" StrokeThickness="0" StrokeShape="RoundRectangle 16"
+                        WidthRequest="56" HeightRequest="56" Padding="12" HorizontalOptions="Start" Margin="0,0,0,16">
+                    <Image Source="ic_globo_blanco.png" SemanticProperties.Description="" />
+                </Border>
+                <Label Text="CountryAPI" TextColor="{StaticResource Blanco}" FontSize="28" FontFamily="sans-serif-medium"
+                       SemanticProperties.HeadingLevel="Level1" />
+                <Label Text="Consumo de APIs públicas · Inicie sesión para continuar" TextColor="{StaticResource TextoSobreAzul}"
+                       FontSize="14" Margin="0,4,0,0" />
+            </VerticalStackLayout>
+
+            <!-- Formulario sobre la cabecera -->
+            <Border Style="{StaticResource Tarjeta}" Margin="20,-52,20,0" Padding="20">
+                <VerticalStackLayout>
+                    <Label Style="{StaticResource Titulo}" Text="Iniciar sesión" />
+                    <v:Campo x:Name="CampoUsuario" Etiqueta="Usuario" Icono="ic_usuario_suave.png" TipoRetorno="Next" Margin="0,16,0,0" />
+                    <v:Campo x:Name="CampoClave" Etiqueta="Clave" Icono="ic_clave_suave.png" EsClave="True" TipoRetorno="Done" Margin="0,12,0,0" />
+                    <v:Aviso x:Name="AvisoPantalla" />
+                    <Button x:Name="BotonIngresar" Style="{StaticResource BotonPrimario}" Text="Ingresar" Margin="0,20,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Servidor al que se conecta la app (se puede cambiar sin recompilar) -->
+            <Border Style="{StaticResource Tarjeta}" Margin="20" Padding="16">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout Spacing="8">
+                        <Image Source="ic_servidor_azul.png" WidthRequest="22" HeightRequest="22" VerticalOptions="Center" />
+                        <Label Style="{StaticResource Subtitulo}" Text="Servidor" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Label x:Name="TextoServidor" Style="{StaticResource Suave}" Margin="0,6,0,0" />
+                    <v:IndicadorServidor x:Name="IndicadorLogin" Margin="0,6,0,0" />
+                    <Button x:Name="BotonServidor" Style="{StaticResource BotonTexto}" Text="Cambiar servidor"
+                            HorizontalOptions="Start" Margin="-12,4,0,0" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</v:PantallaBase>

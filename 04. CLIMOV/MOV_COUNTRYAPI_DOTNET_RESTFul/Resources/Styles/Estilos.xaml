@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Paleta y estilos de CountryAPI (los colors.xml y styles.xml del cliente Android). -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Color x:Key="Azul">#1F4E79</Color>
+    <Color x:Key="AzulOscuro">#183D60</Color>
+    <Color x:Key="AzulClaro">#E8EFF7</Color>
+    <Color x:Key="Fondo">#F3F4F6</Color>
+    <Color x:Key="Texto">#1F2933</Color>
+    <Color x:Key="TextoSuave">#4B5563</Color>
+    <Color x:Key="Borde">#D1D5DB</Color>
+    <Color x:Key="Verde">#22C55E</Color>
+    <Color x:Key="VerdeClaro">#E9F9EF</Color>
+    <Color x:Key="VerdeTexto">#166534</Color>
+    <Color x:Key="Rojo">#B91C1C</Color>
+    <Color x:Key="RojoClaro">#FDECEC</Color>
+    <Color x:Key="Blanco">#FFFFFF</Color>
+    <Color x:Key="TextoSobreAzul">#D6E2EF</Color>
+
+    <!-- Textos -->
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource Texto}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="Titulo" TargetType="Label">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="TextColor" Value="{StaticResource Texto}" />
+        <Setter Property="FontFamily" Value="sans-serif-medium" />
+    </Style>
+    <Style x:Key="Subtitulo" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource Azul}" />
+        <Setter Property="FontFamily" Value="sans-serif-medium" />
+    </Style>
+    <Style x:Key="Suave" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource TextoSuave}" />
+    </Style>
+
+    <!-- Tarjetas -->
+    <Style x:Key="Tarjeta" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Blanco}" />
+        <Setter Property="Stroke" Value="{StaticResource Borde}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+    </Style>
+    <Style x:Key="TablaFondo" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Blanco}" />
+        <Setter Property="Stroke" Value="{StaticResource Borde}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+    </Style>
+
+    <!-- Botones -->
+    <Style x:Key="BotonPrimario" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Azul}" />
+        <Setter Property="TextColor" Value="{StaticResource Blanco}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="sans-serif-medium" />
+        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="20,0" />
+    </Style>
+    <Style x:Key="BotonSecundario" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Blanco}" />
+        <Setter Property="TextColor" Value="{StaticResource Azul}" />
+        <Setter Property="BorderColor" Value="{StaticResource Azul}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="sans-serif-medium" />
+        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="20,0" />
+    </Style>
+    <Style x:Key="BotonTexto" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Azul}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontFamily" Value="sans-serif-medium" />
+        <Setter Property="MinimumHeightRequest" Value="48" />
+        <Setter Property="Padding" Value="12,0" />
+    </Style>
+    <!-- Botón de ícono de la barra azul -->
+    <Style x:Key="BotonBarra" TargetType="ImageButton">
+        <Setter Property="WidthRequest" Value="48" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <!-- Lista de selección (región del formulario) -->
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{StaticResource Texto}" />
+        <Setter Property="TitleColor" Value="{StaticResource TextoSuave}" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="{StaticResource Fondo}" />
+    </Style>
+
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{StaticResource Fondo}" />
+    </Style>
+</ResourceDictionary>

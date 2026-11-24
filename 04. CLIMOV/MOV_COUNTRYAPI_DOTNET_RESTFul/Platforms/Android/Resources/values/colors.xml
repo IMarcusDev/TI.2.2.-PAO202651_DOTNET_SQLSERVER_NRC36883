@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Barra de estado y acentos de Android con la paleta de CountryAPI -->
+    <color name="colorPrimary">#1F4E79</color>
+    <color name="colorPrimaryDark">#183D60</color>
+    <color name="colorAccent">#1F4E79</color>
+</resources>

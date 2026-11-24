@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PantallaBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:v="clr-namespace:ec.edu.monster.vista"
+                x:Class="ec.edu.monster.vista.ImportacionPantalla">
+    <ScrollView>
+        <VerticalStackLayout Padding="16">
+            <Label Style="{StaticResource Suave}"
+                   Text="Trae todos los países de la API REST Countries. Los nuevos se registran y los existentes se actualizan, sin duplicar." />
+            <v:Aviso x:Name="AvisoPantalla" />
+            <Button x:Name="BotonImportar" Style="{StaticResource BotonPrimario}" Text="Importar países"
+                    ImageSource="ic_importar_blanco.png" Margin="0,16,0,0" />
+
+            <!-- Resumen: recibidos, registrados y actualizados -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,16,0,0">
+                <Border Style="{StaticResource Tarjeta}" Padding="12">
+                    <VerticalStackLayout>
+                        <Label x:Name="Recibidos" Text="0" FontSize="26" FontFamily="sans-serif-medium" TextColor="{StaticResource Azul}" />
+                        <Label Style="{StaticResource Suave}" FontSize="13" Text="Recibidos de la API" Margin="0,2,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Tarjeta}" Padding="12">
+                    <VerticalStackLayout>
+                        <Label x:Name="Registrados" Text="0" FontSize="26" FontFamily="sans-serif-medium" TextColor="{StaticResource Azul}" />
+                        <Label Style="{StaticResource Suave}" FontSize="13" Text="Registrados (nuevos)" Margin="0,2,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Tarjeta}" Padding="12">
+                    <VerticalStackLayout>
+                        <Label x:Name="Actualizados" Text="0" FontSize="26" FontFamily="sans-serif-medium" TextColor="{StaticResource Azul}" />
+                        <Label Style="{StaticResource Suave}" FontSize="13" Text="Actualizados" Margin="0,2,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</v:PantallaBase>

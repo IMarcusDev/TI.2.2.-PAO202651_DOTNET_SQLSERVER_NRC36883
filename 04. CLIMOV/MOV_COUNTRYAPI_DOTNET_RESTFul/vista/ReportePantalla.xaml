@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PantallaBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:v="clr-namespace:ec.edu.monster.vista"
+                x:Class="ec.edu.monster.vista.ReportePantalla">
+    <ScrollView>
+        <VerticalStackLayout Padding="16">
+            <Label Style="{StaticResource Suave}" Text="Estadísticas calculadas sobre los países almacenados." />
+            <v:Aviso x:Name="AvisoPantalla" />
+            <Button x:Name="BotonActualizar" Style="{StaticResource BotonSecundario}" Text="Actualizar" Margin="0,16,0,0" />
+
+            <Border Style="{StaticResource Tarjeta}" Padding="16" Margin="0,16,0,0">
+                <VerticalStackLayout>
+                    <Label Style="{StaticResource Subtitulo}" Text="País más poblado" />
+                    <Label x:Name="MasPoblado" Text="—" FontSize="26" FontFamily="sans-serif-medium"
+                           TextColor="{StaticResource Azul}" Margin="0,4,0,0" />
+                    <Label x:Name="PoblacionMasPoblado" Style="{StaticResource Suave}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Style="{StaticResource Subtitulo}" Text="Cantidad de países por región" Margin="0,20,0,8" />
+            <Border Style="{StaticResource TablaFondo}">
+                <VerticalStackLayout x:Name="TablaConteo" />
+            </Border>
+
+            <Label Style="{StaticResource Subtitulo}" Text="Promedio poblacional por región" Margin="0,20,0,8" />
+            <Border Style="{StaticResource TablaFondo}">
+                <VerticalStackLayout x:Name="TablaPromedio" />
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</v:PantallaBase>

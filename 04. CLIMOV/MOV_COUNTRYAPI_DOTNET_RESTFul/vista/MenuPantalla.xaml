@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PantallaBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:v="clr-namespace:ec.edu.monster.vista"
+                x:Class="ec.edu.monster.vista.MenuPantalla">
+    <ScrollView>
+        <VerticalStackLayout Padding="16">
+            <Label Style="{StaticResource Titulo}" Text="Menú principal" SemanticProperties.HeadingLevel="Level2" />
+            <Label Style="{StaticResource Suave}" Text="Elija una opción." Margin="0,4,0,0" />
+            <v:Aviso x:Name="AvisoPantalla" />
+            <!-- Una tarjeta por opción (se agregan desde MenuPantalla.xaml.cs) -->
+            <VerticalStackLayout x:Name="Opciones" Margin="0,12,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</v:PantallaBase>
