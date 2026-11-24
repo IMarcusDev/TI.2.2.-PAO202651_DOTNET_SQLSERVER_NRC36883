@@ -181,3 +181,31 @@ Solo lo que tuvo que cambiar respecto del cliente Android por la tecnología; la
 - **K11. Revisión en el emulador** (Pixel 7, API 36), contra el servidor .NET.
   - Recorridos: inicio de sesión con error y correcto; menú; Países (lista, Editar, formulario, validación «Ingrese el nombre del país», Cancelar); Buscar y filtrar (Europa → 2 países); Reportes; Universidades; Importar (confirmación cancelada); Consultar en la API («ecuador» con REST Countries real y Guardar); sesión expirada al reiniciar el servidor; Cerrar sesión; «Cambiar servidor» con una dirección inválida.
   - Si se maneja el emulador con teclas (`adb shell input keyevent`), Android sale del modo táctil y dibuja su resaltado de foco gris sobre la vista enfocada. Es normal de Android y desaparece al tocar la pantalla.
+
+## L. Fase 4 (consola)
+
+Solo lo que tuvo que cambiar respecto de la consola Java por la tecnología; el menú, las preguntas, las tablas y los mensajes son los de Java (F1 a F7 de TI.2.1).
+
+- **L1. Mismo código que el escritorio.** `modelos`, `config`, `servicios`, `controlador` y las interfaces de `vista` son copias sin cambios del cliente WPF, igual que en Java (F1).
+- **L2. Acciones asíncronas.** Los controladores devuelven `Task` (H11). `PantallaConsola.Ejecutar` espera la tarea con `GetAwaiter().GetResult()`. En una consola no hay contexto de sincronización, así que no se bloquea. Un error inesperado se muestra y el programa sigue, como en Java.
+- **L3. Punto de entrada.** El `App` de Java pasa a la clase `Program` (`Program.cs`): el constructor arma servicios, pantallas y controladores, y `Ejecutar()` recorre el ciclo inicio de sesión → menú.
+- **L4. Consola del sistema.**
+  - `chcp 65001` pasa a `Console.OutputEncoding` y `Console.InputEncoding` en UTF-8.
+  - `System.console().readPassword` pasa a `Console.ReadKey(intercept: true)`, solo cuando la entrada es un teclado real. Si la entrada viene de un archivo o de las pruebas, la clave se lee como una línea más.
+  - Los colores ANSI siguen las mismas reglas que en Java (F6).
+- **L5. Formato de números.** Como en el cliente MAUI, los separadores de Ecuador (`.` de miles y `,` decimal) se fijan en `Tabla` y no dependen de la cultura del sistema.
+- **L6. Pruebas.**
+  - Las 64 de Java, traducidas a xUnit en `pruebas/`: las 49 del escritorio y las 15 de `ConsolaTest`.
+  - El servidor falso agrega `AlPrimerPedido` (una respuesta que solo vale para el primer pedido), igual que el de la consola Java, para probar un inicio de sesión que falla y luego entra.
+- **L7. Revisión real.**
+  - **Contra el servidor .NET**, con entrada de un archivo:
+    - inicio fallido y correcto;
+    - Buscar y filtrar (Europa → 2 países);
+    - Reportes y universidades guardadas (5);
+    - registro de «Pais Prueba» (ID 13) y su eliminación;
+    - cierre de sesión y salida.
+  - **Prueba cruzada contra el servidor Java** (Payara + MySQL con 254 países), apuntando el cliente con `COUNTRYAPI_CONFIG`:
+    - reportes, Europa → 54 países y 43 universidades;
+    - registrar «Ecuador» → «Ya existe un país con ese nombre» (409), luego cancelado;
+    - cierre de sesión.
+    - No se modificó ningún dato del servidor Java.

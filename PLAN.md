@@ -140,9 +140,10 @@ Se compila por un junction corto (`C:\climovcountry`), por el límite de 260 car
 
 | Java | C# |
 | --- | --- |
-| `App` | `Program.cs` |
+| `App` | `Program.cs` (clase `Program`: arma el cliente y recorre login → menú) |
 | `vista/*Consola` (8), `Consola`, `PantallaConsola`, `Tabla` | `vista/*.cs` con los mismos nombres |
-| 4 clases de prueba (64) | `pruebas/` xUnit (64) |
+| `servidor.properties` (`-Dcountryapi.config`) | `appsettings.json` junto al ejecutable (variable `COUNTRYAPI_CONFIG`), como el escritorio |
+| 4 clases de prueba (64) | `pruebas/` xUnit (64): las 49 del escritorio y `ConsolaTest` (15) |
 
 ### 4.4 Web MVC: `04. CLIWEB/WEB_COUNTRYAPI_DOTNET_RESTFul`
 
