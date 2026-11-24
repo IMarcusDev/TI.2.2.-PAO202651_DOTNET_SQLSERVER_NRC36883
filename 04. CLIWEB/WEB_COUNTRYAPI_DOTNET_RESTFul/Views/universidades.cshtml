@@ -1,0 +1,55 @@
+@* Universidades (ECUD10): un solo formulario con «Importar» (POST) y «Ver guardadas». *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["titulo"] = "Universidades";
+    ViewData["pantalla"] = "universidades";
+    var universidades = ViewData[UniversidadVistaWeb.UNIVERSIDADES] as List<Universidad>;
+}
+<h1 class="titulo">Universidades</h1>
+<p class="descripcion">Importa desde la API de universidades las de un país (escrito en inglés) y consulta las guardadas.</p>
+@await Html.PartialAsync("~/Views/Shared/_Avisos.cshtml")
+
+<form method="post" action="/universidades" class="fila-formulario" novalidate>
+    @Html.AntiForgeryToken()
+    <div class="campo">
+        <label for="pais">País (en inglés)</label>
+        <input id="pais" name="pais" value="@ViewData[UniversidadVistaWeb.PAIS]">
+    </div>
+    <button class="btn" type="submit" name="accion" value="importar">Importar</button>
+    <button class="btn btn--secundario" type="submit" name="accion" value="listar">Ver guardadas</button>
+</form>
+
+@if (universidades != null)
+{
+    <p class="total">@universidades.Count @(universidades.Count == 1 ? "universidad" : "universidades")</p>
+}
+@if (universidades is { Count: > 0 })
+{
+    <div class="tabla-contenedor">
+        <table class="tabla">
+            <thead>
+            <tr><th scope="col">Nombre</th><th scope="col">Dominio</th><th scope="col">Sitio web</th></tr>
+            </thead>
+            <tbody>
+            @foreach (Universidad u in universidades)
+            {
+                <tr>
+                    <td>@u.Nombre</td>
+                    <td>@u.Dominio</td>
+                    <td>
+                        @* Solo direcciones http(s): un «javascript:» de la API nunca se vuelve enlace. *@
+                        @if (u.SitioWeb != null && (u.SitioWeb.StartsWith("http://") || u.SitioWeb.StartsWith("https://")))
+                        {
+                            <a href="@u.SitioWeb" target="_blank" rel="noopener noreferrer">@u.SitioWeb</a>
+                        }
+                        else
+                        {
+                            @u.SitioWeb
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

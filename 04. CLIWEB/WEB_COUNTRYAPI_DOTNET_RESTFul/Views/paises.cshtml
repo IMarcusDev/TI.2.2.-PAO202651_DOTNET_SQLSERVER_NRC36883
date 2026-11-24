@@ -1,0 +1,142 @@
+@*
+  Gestión de países (ECUD4): búsqueda por nombre, tabla con Editar y Eliminar por fila,
+  formulario (nuevo, edición o devuelto con error) y confirmación de eliminación.
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["titulo"] = "Países";
+    ViewData["pantalla"] = "paises";
+    var paises = ViewData[PaisVistaWeb.PAISES] as List<Pais>;
+    var formulario = ViewData[PaisVistaWeb.FORMULARIO] as Pais;
+    var eliminar = ViewData[PaisVistaWeb.ELIMINAR] as Pais;
+    var regiones = ViewData["regiones"] as IReadOnlyList<string> ?? [];
+}
+<h1 class="titulo">Países</h1>
+<p class="descripcion">Países almacenados en la base de datos. Busque por nombre o mantenga el listado.</p>
+@await Html.PartialAsync("~/Views/Shared/_Avisos.cshtml")
+
+@if (eliminar != null)
+{
+    <div class="tarjeta confirmacion confirmacion--peligro" role="alertdialog" aria-labelledby="pregunta-eliminar">
+        <p id="pregunta-eliminar"><strong>¿Eliminar el país @eliminar.Nombre?</strong></p>
+        <form method="post" action="/paises" class="botones">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="accion" value="eliminar">
+            <input type="hidden" name="id" value="@eliminar.Id">
+            <input type="hidden" name="confirmado" value="si">
+            <button class="btn btn--peligro" type="submit">Eliminar</button>
+            <a class="btn btn--secundario" href="/paises">Cancelar</a>
+        </form>
+    </div>
+}
+
+@if (formulario != null)
+{
+    bool nuevo = formulario.Id == 0;
+    <section class="tarjeta" aria-labelledby="titulo-formulario">
+        <h2 class="tarjeta__titulo" id="titulo-formulario">@(nuevo ? "Nuevo país" : "Datos del país")</h2>
+        <form method="post" action="/paises" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="accion" value="@(nuevo ? "registrar" : "actualizar")">
+            <input type="hidden" name="id" value="@formulario.Id">
+            <div class="formulario">
+                <div class="campo">
+                    <label for="f-nombre">Nombre *</label>
+                    <input id="f-nombre" name="nombre" value="@formulario.Nombre" autofocus>
+                </div>
+                <div class="campo">
+                    <label for="f-capital">Capital</label>
+                    <input id="f-capital" name="capital" value="@formulario.Capital">
+                </div>
+                <div class="campo">
+                    <label for="f-region">Región *</label>
+                    <select id="f-region" name="region">
+                        <option value="">Seleccione...</option>
+                        @foreach (string r in regiones)
+                        {
+                            <option value="@r" selected="@(r == formulario.Region)">@r</option>
+                        }
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="f-subregion">Subregión</label>
+                    <input id="f-subregion" name="subregion" value="@formulario.SubRegion">
+                </div>
+                <div class="campo">
+                    <label for="f-poblacion">Población *</label>
+                    @* Un valor inválido escrito antes (-1) vuelve vacío para corregirlo. *@
+                    <input id="f-poblacion" name="poblacion" inputmode="numeric"
+                           value="@(formulario.Poblacion >= 0 ? formulario.Poblacion.ToString() : "")">
+                </div>
+                <div class="campo">
+                    <label for="f-area">Área (km²)</label>
+                    <input id="f-area" name="area" inputmode="decimal"
+                           value="@(formulario.Area >= 0 ? Formato.Editable(formulario.Area) : "")">
+                </div>
+                <div class="campo">
+                    <label for="f-moneda">Moneda</label>
+                    <input id="f-moneda" name="moneda" value="@formulario.Moneda">
+                </div>
+            </div>
+            <div class="botones">
+                <button class="btn" type="submit">Guardar</button>
+                <a class="btn btn--secundario" href="/paises">Cancelar</a>
+            </div>
+        </form>
+    </section>
+}
+
+<div class="fila-formulario" style="margin-top:16px">
+    <form method="get" action="/paises" class="fila-formulario" style="flex:1 1 auto">
+        <div class="campo">
+            <label for="q">Buscar</label>
+            <input id="q" name="q" value="@Context.Request.Query["q"]" placeholder="Nombre o parte del nombre">
+        </div>
+        <button class="btn" type="submit">Buscar</button>
+    </form>
+    <a class="btn" href="/paises?nuevo">+ Nuevo</a>
+</div>
+
+@if (paises != null)
+{
+    <p class="total">@paises.Count @(paises.Count == 1 ? "país" : "países")</p>
+}
+@if (paises is { Count: > 0 })
+{
+    <div class="tabla-contenedor">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Capital</th>
+                <th scope="col">Región</th>
+                <th scope="col">Subregión</th>
+                <th scope="col" class="numero">Población</th>
+                <th scope="col" class="numero">Área (km²)</th>
+                <th scope="col">Moneda</th>
+                <th scope="col"><span class="solo-lectores">Acciones</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (Pais p in paises)
+            {
+                <tr class="@(p.Id == formulario?.Id || p.Id == eliminar?.Id ? "elegida" : "")">
+                    <td>@p.Nombre</td>
+                    <td>@p.Capital</td>
+                    <td>@p.Region</td>
+                    <td>@p.SubRegion</td>
+                    <td class="numero">@Formato.Entero(p.Poblacion)</td>
+                    <td class="numero">@Formato.Decimal(p.Area)</td>
+                    <td>@p.Moneda</td>
+                    <td class="acciones">
+                        <a class="btn btn--secundario btn--pequeno" href="/paises?editar=@p.Id"
+                           aria-label="Editar @p.Nombre">Editar</a>
+                        <a class="btn btn--peligro btn--pequeno" href="/paises?eliminar=@p.Id"
+                           aria-label="Eliminar @p.Nombre">Eliminar</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

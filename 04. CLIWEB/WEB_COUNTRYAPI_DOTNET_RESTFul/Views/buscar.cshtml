@@ -1,0 +1,76 @@
+@*
+  Buscar y filtrar (ECUD5): nombre y capital parciales y una región. Al elegir otra región el
+  formulario se envía solo (data-autoenviar); sin JavaScript, con el botón Buscar.
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["titulo"] = "Buscar y filtrar";
+    ViewData["pantalla"] = "buscar";
+    var resultados = ViewData[BusquedaVistaWeb.RESULTADOS] as List<Pais>;
+    var total = ViewData[BusquedaVistaWeb.TOTAL] as int?;
+    var regiones = ViewData["regiones"] as List<string> ?? [];
+    string region = Context.Request.Query["region"].ToString();
+}
+<h1 class="titulo">Buscar y filtrar</h1>
+<p class="descripcion">Combine nombre, capital y región. Al elegir una región la tabla se actualiza al momento.</p>
+
+<form method="get" action="/buscar" data-autoenviar>
+    <div class="fila-formulario">
+        <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" value="@Context.Request.Query["nombre"]">
+        </div>
+        <div class="campo">
+            <label for="capital">Capital</label>
+            <input id="capital" name="capital" value="@Context.Request.Query["capital"]">
+        </div>
+        <button class="btn" type="submit">Buscar</button>
+    </div>
+    <fieldset class="chips">
+        <legend>Región</legend>
+        <label class="chip"><input type="radio" name="region" value="" checked="@(region.Length == 0)"><span>Todas</span></label>
+        @foreach (string r in regiones)
+        {
+            <label class="chip"><input type="radio" name="region" value="@r" checked="@(r == region)"><span>@r</span></label>
+        }
+    </fieldset>
+</form>
+
+<div style="margin-top:16px">@await Html.PartialAsync("~/Views/Shared/_Avisos.cshtml")</div>
+
+@if (total != null)
+{
+    <p class="total total--destacado">@total @(total == 1 ? "país encontrado" : "países encontrados")</p>
+}
+@if (resultados is { Count: > 0 })
+{
+    <div class="tabla-contenedor">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Capital</th>
+                <th scope="col">Región</th>
+                <th scope="col">Subregión</th>
+                <th scope="col" class="numero">Población</th>
+                <th scope="col" class="numero">Área (km²)</th>
+                <th scope="col">Moneda</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (Pais p in resultados)
+            {
+                <tr>
+                    <td>@p.Nombre</td>
+                    <td>@p.Capital</td>
+                    <td>@p.Region</td>
+                    <td>@p.SubRegion</td>
+                    <td class="numero">@Formato.Entero(p.Poblacion)</td>
+                    <td class="numero">@Formato.Decimal(p.Area)</td>
+                    <td>@p.Moneda</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

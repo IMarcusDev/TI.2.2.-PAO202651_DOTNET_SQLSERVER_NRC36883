@@ -1,0 +1,63 @@
+@* Consultar país en la API (ECUD3): resultados con «¿Guardado?» y un botón Guardar por fila. *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["titulo"] = "Consultar país en la API";
+    ViewData["pantalla"] = "consultar";
+    var resultados = ViewData[ConsultaApiVistaWeb.RESULTADOS] as List<Pais>;
+}
+<h1 class="titulo">Consultar país en la API</h1>
+<p class="descripcion">Consulta REST Countries por nombre (por ejemplo «ecuador») y guarde el país elegido.</p>
+@await Html.PartialAsync("~/Views/Shared/_Avisos.cshtml")
+
+<form method="get" action="/consultar" class="fila-formulario" novalidate>
+    <div class="campo">
+        <label for="nombre">Nombre del país</label>
+        <input id="nombre" name="nombre" value="@ViewData["nombre"]" autocomplete="off">
+    </div>
+    <button class="btn" type="submit">Consultar</button>
+</form>
+
+@if (resultados is { Count: > 0 })
+{
+    <p class="total">@resultados.Count @(resultados.Count == 1 ? "resultado" : "resultados")</p>
+    <div class="tabla-contenedor">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Capital</th>
+                <th scope="col">Región</th>
+                <th scope="col">Subregión</th>
+                <th scope="col" class="numero">Población</th>
+                <th scope="col" class="numero">Área (km²)</th>
+                <th scope="col">Moneda</th>
+                <th scope="col">¿Guardado?</th>
+                <th scope="col"><span class="solo-lectores">Acción</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < resultados.Count; i++)
+            {
+                Pais p = resultados[i];
+                <tr>
+                    <td>@p.Nombre</td>
+                    <td>@p.Capital</td>
+                    <td>@p.Region</td>
+                    <td>@p.SubRegion</td>
+                    <td class="numero">@Formato.Entero(p.Poblacion)</td>
+                    <td class="numero">@Formato.Decimal(p.Area)</td>
+                    <td>@p.Moneda</td>
+                    <td><span class="pastilla @(p.Guardado ? "pastilla--si" : "pastilla--no")">@(p.Guardado ? "Sí" : "No")</span></td>
+                    <td class="acciones">
+                        <form method="post" action="/consultar" class="en-linea">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="numero" value="@(i + 1)">
+                            <button class="btn btn--pequeno" type="submit">Guardar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

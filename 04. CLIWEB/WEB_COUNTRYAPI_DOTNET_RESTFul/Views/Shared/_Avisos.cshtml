@@ -1,0 +1,9 @@
+@* Avisos de la pantalla: verde con el mensaje de éxito, rojo con el error. *@
+@if (ViewData[VistaWeb.MENSAJE] is string mensaje && mensaje.Length > 0)
+{
+    <div class="aviso aviso--exito" role="status">@mensaje</div>
+}
+@if (ViewData[VistaWeb.ERROR] is string error && error.Length > 0)
+{
+    <div class="aviso aviso--error" role="alert">@error</div>
+}

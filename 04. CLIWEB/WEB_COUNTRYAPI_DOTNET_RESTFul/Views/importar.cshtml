@@ -1,0 +1,40 @@
+@* Importar países (ECUD2): confirmación en la página y resumen de la importación. *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["titulo"] = "Importar países";
+    ViewData["pantalla"] = "importar";
+    var resumen = ViewData[ImportacionVistaWeb.RESUMEN] as ResumenImportacion;
+}
+<h1 class="titulo">Importar países</h1>
+<p class="descripcion">Trae todos los países de la API REST Countries. Los nuevos se registran y los existentes se actualizan, sin duplicar.</p>
+@await Html.PartialAsync("~/Views/Shared/_Avisos.cshtml")
+
+@if (ViewData["confirmar"] is true)
+{
+    <div class="tarjeta confirmacion">
+        <p><strong>¿Importar los países desde la API REST Countries? Los países existentes se actualizarán</strong></p>
+        <form method="post" action="/importar" class="botones">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="confirmado" value="si">
+            <button class="btn" type="submit">Importar</button>
+            <a class="btn btn--secundario" href="/importar">Cancelar</a>
+        </form>
+    </div>
+}
+else
+{
+    <a class="btn" href="/importar?confirmar">Importar países</a>
+}
+
+@if (resumen != null)
+{
+    <h2 class="subtitulo">Resumen de la importación</h2>
+    <div class="cifras">
+        <div class="cifra"><span class="cifra__valor">@Formato.Entero(resumen.Recibidos)</span>
+            <span class="cifra__etiqueta">Recibidos de la API</span></div>
+        <div class="cifra"><span class="cifra__valor">@Formato.Entero(resumen.Registrados)</span>
+            <span class="cifra__etiqueta">Registrados (nuevos)</span></div>
+        <div class="cifra"><span class="cifra__valor">@Formato.Entero(resumen.Actualizados)</span>
+            <span class="cifra__etiqueta">Actualizados</span></div>
+    </div>
+}

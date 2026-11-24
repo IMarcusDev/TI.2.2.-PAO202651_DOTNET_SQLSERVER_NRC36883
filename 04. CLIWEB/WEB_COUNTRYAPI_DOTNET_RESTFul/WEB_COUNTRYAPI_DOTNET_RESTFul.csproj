@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- Cliente web (ASP.NET Core MVC + Razor) de CountryAPI. Consume solo el servidor RESTful. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ec.edu.monster</RootNamespace>
+    <AssemblyName>WEB_COUNTRYAPI_DOTNET_RESTFul</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Las pruebas viven en pruebas/ (proyecto xUnit aparte): se excluyen de la aplicación. -->
+  <ItemGroup>
+    <Compile Remove="pruebas\**" />
+    <Content Remove="pruebas\**" />
+    <None Remove="pruebas\**" />
+    <EmbeddedResource Remove="pruebas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WEB_COUNTRYAPI_DOTNET_RESTFul.Pruebas" />
+  </ItemGroup>
+
+</Project>

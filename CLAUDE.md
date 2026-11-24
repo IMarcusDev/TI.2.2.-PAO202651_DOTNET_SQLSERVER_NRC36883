@@ -38,7 +38,7 @@ The full brief is [PROMPT_CLAUDE_CODE_TI22.md](PROMPT_CLAUDE_CODE_TI22.md). The 
 04. CLIESC/ESC_COUNTRYAPI_DOTNET_RESTFul          WPF, DataGrid
 04. CLIMOV/MOV_COUNTRYAPI_DOTNET_RESTFul          .NET MAUI (Android); emulator → http://10.0.2.2:5088/api
 04. CLICON/CONSOLE_COUNTRYAPI_DOTNET_RESTFul      .NET console app, numbered text menu
-04. CLIWEB/WEB_COUNTRYAPI_DOTNET_RESTFul          ASP.NET Core MVC + Razor
+04. CLIWEB/WEB_COUNTRYAPI_DOTNET_RESTFul          ASP.NET Core MVC + Razor on Kestrel :5090 (0.0.0.0)
 ```
 
 Each project keeps its tests in `pruebas/` at the project root, next to the architecture folders, as a separate xUnit project excluded from the main `.csproj` (`<Compile Remove="pruebas\**" />`). The professor requires this layout.
