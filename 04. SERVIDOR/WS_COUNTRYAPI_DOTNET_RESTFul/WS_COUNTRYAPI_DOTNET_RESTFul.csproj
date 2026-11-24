@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ec.edu.monster</RootNamespace>
+    <AssemblyName>WS_COUNTRYAPI_DOTNET_RESTFul</AssemblyName>
+    <!-- La clave de REST Countries se guarda con «dotnet user-secrets», fuera del repositorio. -->
+    <UserSecretsId>countryapi-ti22-ws-countryapi-dotnet-restful</UserSecretsId>
+  </PropertyGroup>
+
+  <!-- Las pruebas viven en pruebas/ (proyecto xUnit aparte): se excluyen de la compilación del servidor. -->
+  <ItemGroup>
+    <Compile Remove="pruebas\**" />
+    <Content Remove="pruebas\**" />
+    <EmbeddedResource Remove="pruebas\**" />
+    <None Remove="pruebas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WS_COUNTRYAPI_DOTNET_RESTFul.Pruebas" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.15">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+</Project>

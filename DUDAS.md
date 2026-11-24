@@ -4,7 +4,9 @@ Las decisiones A1 a G7 de TI.2.1 (`../TI.2.1. PAO202651_JAVA_MYSQL_NRC36883/DUDA
 
 ## H. Fase 0 (lectura y plan)
 
-### H1. Versión de .NET — **necesito tu decisión**
+### H1. Versión de .NET
+
+> **Resuelto el 24/11/2026 con la opción a.** El autor aceptó las recomendaciones H2 a H15 y eligió .NET 10 (`net10.0`, EF Core 10) para los cinco proyectos.
 
 - **Documentación de TI.2.2:** .NET 8 y EF Core 8 en todo (ERS, ARQ).
 - **Este equipo:**
@@ -36,7 +38,12 @@ En SQL Server la intercalación por defecto (`SQL_Latin1_General_CP1_CI_AS`) dis
 
 - **Java:** al registrar consulta `existePorNombre` (409). Al actualizar confía en el índice UNIQUE de MySQL, que trata «Peru» y «Perú» como el mismo nombre.
 - **SQL Server:** el UNIQUE usa la intercalación de la base (`CI_AS`), así que renombrar un país a «Peru» cuando existe «Perú» **no** fallaría.
-- **Decisión:** para dar el mismo 409 sin cambiar la base, `PaisDAO.Actualizar` comprueba antes si otro país (otro `Id`) tiene ese nombre con `Latin1_General_CI_AI`. Si aun así el UNIQUE salta (otro usuario guardó al mismo tiempo), la violación de clave (2601/2627) se convierte en 409, como el `SQLIntegrityConstraintViolationException` de Java.
+- **Decisión (aplicada en la fase 1):** para dar el mismo 409 sin cambiar la base, `PaisControlador.ActualizarPais` comprueba antes de actualizar, con los métodos del diagrama:
+  1. `BuscarPorId`; si no existe, 404;
+  2. si el nombre cambió (comparado sin tildes ni mayúsculas) y `ExistePorNombre` lo encuentra, 409;
+  3. `Actualizar`.
+
+  Es el mismo orden que el DS .NET (`DS_Gestionar_Paises`) y da los mismos códigos que Java en todos los casos: renombrar «Perú» a «peru» funciona, y renombrar otro país a «Peru» es 409. Si aun así el UNIQUE salta (otro usuario guardó al mismo tiempo), la violación de clave (2601/2627) se convierte en 409, como el `SQLIntegrityConstraintViolationException` de Java.
 
 ### H5. Comodines de `LIKE`
 
@@ -44,7 +51,9 @@ Java escapa `\`, `%` y `_`. En SQL Server `[` también es comodín (`[a-z]`), y 
 
 ### H6. Orden por nombre
 
-`ORDER BY nombre` en MySQL (`0900_ai_ci`) y en SQL Server puede diferir con guiones, apóstrofos o letras con tilde. **Plan de verificación:** comparar el orden de los 254 nombres que ya tiene la MySQL de TI.2.1 (sin gastar cuota) con el `ORDER BY Nombre` de SQL Server, además del seed. Si hay diferencias, te las muestro con opciones antes de decidir.
+`ORDER BY nombre` en MySQL (`0900_ai_ci`) y en SQL Server podría diferir con guiones, apóstrofos o letras con tilde.
+
+> **Resuelto el 24/11/2026 sin cambios.** Los 254 nombres de la MySQL de TI.2.1 (importados de la API, con tildes, guiones y espacios) salen en el mismo orden con el `ORDER BY Nombre` de SQL Server y su intercalación por defecto. El orden se deja en la base.
 
 ### H7. Promedio poblacional
 
@@ -107,3 +116,23 @@ No hay SQL Server instalado. `03. BDD/docker-compose.yml` levanta SQL Server 202
 ### H15. Commits
 
 El prompt dice «no hagas commits», pero el autor pidió commits por funcionalidad (24/11/2026). Se hacen en `main` del repositorio de TI.2.2: uno por funcionalidad terminada y verificada, no por archivo.
+
+## I. Fase 1 (servidor)
+
+Solo lo que tuvo que cambiar respecto de Java por la tecnología; ninguna decisión cambia el contrato.
+
+- **I1. Equivalencia comprobada, no supuesta.**
+  - **Comparación byte a byte:** con los mismos 254 países y 43 universidades copiados de la MySQL de TI.2.1 (mismos id y fechas), 40 peticiones dan exactamente el mismo código y el mismo cuerpo en los dos servidores. Cubren listados, búsquedas con tildes y comodines, filtros, reportes, universidades y todos los errores.
+  - **Suite de TI.2.1 sin modificar:** 38 de 38 casos (omite su 502, que usa `asadmin`).
+  - **Copia adaptada:** 42 de 42, con los tres 502.
+  - **Prueba cruzada:** la consola Java funciona contra el servidor .NET.
+- **I2. Clases de excepción de .NET** (no son clases propias): las de la tabla de `PLAN.md`. Los errores de la base se reconocen por `DbException` (por ejemplo `SqlException`) o `DbUpdateException`, aunque EF Core los envuelva en `InvalidOperationException`. Se revisan antes que el resto para no confundirlos con el 409.
+- **I3. Inyección de dependencias en lugar de `new`.**
+  - Java conectaba las clases a mano y usaba `TokenService.getInstancia()`. Aquí `Program.cs` registra `TokenService` como singleton, los DAO y controladores por petición, y `ConsumoAPI` y `ConsumoAPIUniversidades` como clientes de `IHttpClientFactory` (15 s).
+  - Las redirecciones de la API de universidades (hasta 3) las sigue el manejador HTTP; Java las seguía a mano porque `HttpURLConnection` no pasa de HTTP a HTTPS.
+- **I4. Reloj de `TokenService`.** Java recibía un `Clock`; aquí es un `TimeProvider`, que las pruebas reemplazan.
+- **I5. Pruebas.**
+  - Las 54 de Java, traducidas a xUnit con los mismos casos.
+  - 14 casos más para el convertidor de `double` (`DoubleFormatoJava`), que no existe en Java.
+  - El servidor HTTP falso es un `TcpListener` mínimo, en lugar del `HttpServer` del JDK.
+- **I6. Rutas sin distinguir mayúsculas.** ASP.NET Core acepta `/api/paises` además de `/api/Paises`; JAX-RS solo la segunda. Los clientes usan siempre la forma documentada, así que no cambia nada para ellos.

@@ -73,7 +73,7 @@ ASP.NET Core Web API en Kestrel :5088 (`0.0.0.0`), EF Core con SQL Server, `Newt
 | `modelos/data/*` (5) | `modelos/data/*.cs` (5) | `Pais`, `Region`, `Usuario`, `Universidad`, `Sesion` |
 | `modelos/dto/*` (8) | `modelos/dto/*.cs` (8) | `RespuestaDTO<T>` con `CodigoHttp(Exception)` |
 | `modelos/enums/*` (2) | `modelos/enums/*.cs` (2) | |
-| — | `config/JsonJava.cs` | Convertidor de `double` al formato de Java (H8) |
+| — | `config/DoubleFormatoJava.cs` | Convertidor de `double` al formato de Java (H8) |
 | `pruebas/curl_countryapi.sh` | `pruebas/curl_countryapi.sh` | Copia adaptada: solo cambia la URL base y la prueba 502 (H11) |
 | `src/test/...` (7 clases, 54 pruebas) | `pruebas/WS_COUNTRYAPI_DOTNET_RESTFul.Pruebas/` (xUnit) | Las mismas 54 pruebas |
 
