@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Cliente de consola de CountryAPI. Consume solo el servidor RESTful. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ec.edu.monster</RootNamespace>
+    <AssemblyName>CONSOLE_COUNTRYAPI_DOTNET_RESTFul</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Las pruebas viven en pruebas/ (proyecto xUnit aparte): se excluyen de la aplicación. -->
+  <ItemGroup>
+    <Compile Remove="pruebas\**" />
+    <None Remove="pruebas\**" />
+    <EmbeddedResource Remove="pruebas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Único archivo que se edita para apuntar el cliente a otro servidor (sin recompilar). -->
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CONSOLE_COUNTRYAPI_DOTNET_RESTFul.Pruebas" />
+  </ItemGroup>
+
+</Project>
