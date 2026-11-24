@@ -40,3 +40,8 @@ odd/
 
 # Local test data for the EurekaBank database (personal users and passwords)
 /03. BDD/EurekaBank_MySQL_datos.sql
+
+# CountryAPI .NET: configuración local que no se sube
+# (cadena de conexión propia y URL de prueba de las APIs externas; la clave de REST Countries va en user-secrets)
+**/appsettings.Development.json
+**/appsettings.Pruebas.json
