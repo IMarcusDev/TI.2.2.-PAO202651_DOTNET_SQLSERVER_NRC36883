@@ -209,3 +209,42 @@ Solo lo que tuvo que cambiar respecto de la consola Java por la tecnología; el 
     - registrar «Ecuador» → «Ya existe un país con ese nombre» (409), luego cancelado;
     - cierre de sesión.
     - No se modificó ningún dato del servidor Java.
+
+## M. Fase 5 (web MVC)
+
+Solo lo que tuvo que cambiar respecto del cliente JSP + Servlets por la tecnología; las pantallas, las rutas, los textos y el flujo son los de Java (G1 a G7 de TI.2.1).
+
+- **M1. Mismo código que el escritorio.** `modelos`, `config`, `servicios`, `controlador` y las interfaces de `vista` son copias sin cambios del cliente WPF, igual que en Java (G1). Cada servlet pasa a ser un controlador MVC en `web/`, con la misma ruta y los mismos GET/POST.
+- **M2. Sesión propia (`web/AlmacenSesiones`).**
+  - La sesión de ASP.NET Core (`ISession`) solo guarda bytes y no puede cambiar su id. Pero cada usuario necesita objetos vivos (G2: sus vistas y controladores) y el id debe cambiar al iniciar sesión (G5).
+  - Por eso hay una sesión en el servidor, en memoria, con la misma conducta que la `HttpSession`:
+    - cookie `CountryAPI.Sesion` `HttpOnly`;
+    - caduca a los 15 minutos sin uso;
+    - solo `GET /login` la crea antes de autenticarse;
+    - cambia de id al iniciar sesión y se invalida al cerrarla.
+  - El plan decía «borrar la cookie y crear una nueva»; así se logra sin perder los módulos del usuario.
+- **M3. CSRF.**
+  - Se usa el Antiforgery de ASP.NET Core con el campo `_csrf` (`@Html.AntiForgeryToken()` en cada formulario POST), en lugar del token guardado en la sesión.
+  - `filtros/CsrfFilter` conserva la conducta de Java: un login con el token vencido muestra un formulario nuevo; cualquier otro POST sin token válido recibe 403 con la página de error.
+  - La página de error queda fuera del filtro porque ASP.NET la vuelve a ejecutar con el método original.
+- **M4. Acciones asíncronas.** Los controladores MVC son `async` y esperan a los controladores de la aplicación (H11). `ModulosSesion.Ejecutar` atiende de a una las peticiones de un mismo usuario (el `synchronized` de Java) con un `SemaphoreSlim`. Antes de enlazar las vistas lee el formulario completo.
+- **M5. Atributos de la petición.** Lo que el controlador «muestra» va a `HttpContext.Items` (los atributos de la petición de Java). `Pagina.Mostrar` lo pasa a `ViewData` junto con los avisos «flash».
+- **M6. HTML.**
+  - Las vistas Razor tienen el mismo marcado que las JSP, con el mismo CSS y JS (copiados sin cambios).
+  - Razor escapa los textos como `c:out`. Por defecto también convertiría las tildes en entidades (`pa&#xED;s`); se configuró para dejarlas tal cual, como en Java.
+  - Los números usan los separadores de Ecuador fijos (`vista/Formato.cs`), como `fmt:formatNumber` con `es_EC`.
+- **M7. Puerto y dirección del servidor.**
+  - El sitio escucha en `http://0.0.0.0:5090`, en la raíz (Java: `/WEB_COUNTRYAPI_JAVA_RESTFul/` en Payara :8080).
+  - La dirección del servidor RESTful va en `appsettings.json` (`Servidor:Url`) o en el archivo de la variable `COUNTRYAPI_CONFIG`. Reemplaza al `servidor.properties` dentro del war (G7).
+- **M8. Pruebas.**
+  - Las 69 de Java: las 49 del escritorio y las 20 de `WebTest`.
+  - En Java, `WebTest` llamaba a los servlets con un navegador simulado con Mockito. Aquí recorre el sitio completo con `WebApplicationFactory` y `dobles/Navegador` (cookies y token CSRF reales), apuntado al servidor falso. Comprueba los mismos casos en el HTML y en las redirecciones.
+- **M9. Revisión en el navegador** (Chrome) contra el servidor .NET:
+  - inicio de sesión y menú con el saludo;
+  - Países con el formulario de edición;
+  - Buscar y filtrar: al elegir Europa se envía solo y muestra 2 países;
+  - Reportes y Universidades (5);
+  - panel de confirmación de Importar;
+  - página 404;
+  - cierre de sesión desde la barra;
+  - indicador «Servidor disponible».

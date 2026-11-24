@@ -151,13 +151,15 @@ Se compila por un junction corto (`C:\climovcountry`), por el límite de 260 car
 | --- | --- |
 | `web/*Servlet` (10) | `web/*Controller.cs` (Login, Logout, Menu, Paises, Buscar, Consultar, Importar, Reportes, Universidades, Estado) |
 | `web/ModulosSesion`, `Pagina`, `AplicacionWeb` | `web/ModulosSesion.cs` (vistas y controladores por sesión), `web/Pagina.cs`, `Program.cs` |
+| `HttpSession` del contenedor | `web/AlmacenSesiones.cs` (sesión en el servidor con cookie `HttpOnly`, 15 min, cambio de id e invalidación) |
 | `vista/*VistaWeb` (8) + `VistaWeb` | `vista/*VistaWeb.cs` |
 | `filtros/AuthFilter` | `filtros/AuthFilter.cs` (filtro de acción) |
-| `filtros/CsrfFilter` | Antiforgery de ASP.NET Core (`[AutoValidateAntiforgeryToken]`) |
+| `filtros/CsrfFilter` | `filtros/CsrfFilter.cs`: filtro global con el Antiforgery de ASP.NET Core (campo `_csrf`); login vencido → formulario nuevo, el resto → 403 |
 | `WEB-INF/vista/*.jsp`, `partes/*.jspf` | `Views/*.cshtml`, `Views/Shared/_Layout.cshtml` y parciales |
 | `css/countryapi.css`, `js/countryapi.js`, `globo.svg` | `wwwroot/` (mismos archivos) |
-| Sesión de 15 min y cambio de id al iniciar sesión | Sesión de 15 min; al iniciar sesión se borra la cookie de sesión y se crea una nueva |
-| 4 clases de prueba (69) | `pruebas/` xUnit con `WebApplicationFactory` (69) |
+| Sesión de 15 min y cambio de id al iniciar sesión | Igual, con `AlmacenSesiones` |
+| `servidor.properties` dentro del war (`-Dcountryapi.config`) | `appsettings.json` (`Servidor:Url`, variable `COUNTRYAPI_CONFIG`); el sitio escucha en `0.0.0.0:5090` |
+| 4 clases de prueba (69) | `pruebas/` xUnit (69): las 49 del escritorio y `WebTest` (20) con `WebApplicationFactory` y `dobles/Navegador` |
 
 ## 5. Fases (me detengo al final de cada una)
 
