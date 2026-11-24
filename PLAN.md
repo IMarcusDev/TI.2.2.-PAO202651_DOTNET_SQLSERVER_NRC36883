@@ -124,12 +124,15 @@ Pruebas de cada cliente: xUnit en `pruebas/` (proyecto aparte, excluido del `.cs
 
 | Java (Android) | C# (MAUI) |
 | --- | --- |
-| `AplicacionCountryApi`, `PrincipalActivity` (implementa `MenuVista`) | `App.xaml`, `MauiProgram.cs`, `vista/PaginaPrincipal.xaml(.cs)` |
-| `vista/*Fragment` (8) | `vista/*Vista*.xaml` (`ContentView` por módulo que implementa su interfaz) |
-| `FormularioPais`, `PaisAdaptador`, `Tabla`, `Formato`, `Hilos`, `IndicadorServidor`, `FragmentoBase` | Equivalentes MAUI con el mismo nombre |
-| `res/layout`, `res/values`, `res/drawable` | `Resources/Styles/*.xaml`, íconos en `Resources/Images` |
-| `ConfigServidor` (preferencias, `setUrlBase`) | `ConfigServidor` con `Preferences` y «Cambiar servidor»; por defecto `http://10.0.2.2:5088/api` |
-| 4 clases de prueba (56) | `pruebas/` xUnit (net10.0) que enlaza los `.cs` comunes (56) |
+| `AplicacionCountryApi` | `AplicacionCountryApi.cs` (cliente, sesión y servicios), `App.xaml(.cs)`, `MauiProgram.cs` |
+| `PrincipalActivity` (implementa `MenuVista`) | `vista/PaginaPrincipal.xaml(.cs)`: barra azul, pantalla actual, progreso, bloqueo y capa de diálogos |
+| `vista/*Fragment` (8) | `vista/*Pantalla.xaml(.cs)` (`ContentView` que implementa su interfaz) |
+| `FragmentoBase` | `vista/PantallaBase.cs` |
+| `FormularioPais`, `PaisAdaptador`, `Tabla`, `Formato`, `Hilos`, `IndicadorServidor` | Mismo nombre en `vista/` |
+| `res/layout/aviso.xml`, `TextInputLayout`, `LinearProgressIndicator` | `vista/Aviso.cs`, `vista/Campo.cs`, `vista/BarraProgreso.cs` |
+| `res/values` (colores y estilos), `res/drawable` | `Resources/Styles/Estilos.xaml`, `vista/Colores.cs`; íconos SVG en `Resources/Images` |
+| `ConfigServidor` (`BuildConfig`, `SharedPreferences`) | `config/ConfigServidor.cs` (propiedad `Servidor` del `.csproj`) y `config/ConfigServidor.Preferencias.cs` (`Preferences`); por defecto `http://10.0.2.2:5088/api` |
+| 4 clases de prueba (65) | `pruebas/` xUnit (`net10.0`) que enlaza los `.cs` sin MAUI (65) |
 
 Se compila por un junction corto (`C:\climovcountry`), por el límite de 260 caracteres de aapt2.
 
@@ -162,7 +165,7 @@ Se compila por un junction corto (`C:\climovcountry`), por el límite de 260 car
 | 0 | `PLAN.md`, `DUDAS.md`, `CLAUDE.md` | Tu confirmación |
 | 1 | BDD en Docker + servidor + pruebas | `dotnet build` y `dotnet test`; suite curl de Java contra :5088 con todos los casos OK; JSON comparado con el servidor Java; orden de los 254 nombres igual que en MySQL; prueba cruzada consola Java → servidor .NET |
 | 2 | Escritorio WPF | `dotnet build`, `dotnet test` (49), revisión visual |
-| 3 | Móvil MAUI | `dotnet build -f net*-android`, `dotnet test` (56), emulador |
+| 3 | Móvil MAUI | `dotnet build -f net10.0-android`, `dotnet test` (65), emulador |
 | 4 | Consola | `dotnet test` (64); prueba cruzada consola .NET → servidor Java |
 | 5 | Web MVC | `dotnet test` (69), revisión en el navegador |
 

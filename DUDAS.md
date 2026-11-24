@@ -149,3 +149,35 @@ Solo lo que tuvo que cambiar respecto de Swing por la tecnología; las pantallas
 - **J6. Filtros de región.** Los chips son `RadioButton` y vuelven a consultar con el evento `Checked`, no con `Click`. Así responden también al teclado y a la automatización de la interfaz (UI Automation). Volver a pulsar el chip que ya está elegido no repite la consulta; el resultado sería el mismo.
 - **J7. Pruebas.** Las 49 de Java, traducidas a xUnit con los mismos casos, en `pruebas/` (proyecto aparte, excluido del `.csproj`). Los dobles van en `pruebas/dobles/`: `VistaFalsa` y `ServidorFalso` (`TcpListener` mínimo en lugar del `HttpServer` del JDK).
 - **J8. Revisión visual.** Se recorrieron todas las pantallas contra el servidor .NET y la base del seed: inicio de sesión (con error), menú, Países, Buscar y filtrar (filtro Europa → 2 países), Reportes, Universidades, Consultar país en la API e Importar países.
+
+## K. Fase 3 (móvil MAUI)
+
+Solo lo que tuvo que cambiar respecto del cliente Android por la tecnología; las pantallas, los textos, las validaciones, los mensajes y la navegación son los de Java.
+
+- **K1. Capas comunes copiadas del escritorio.** `modelos`, `servicios`, `controlador` y las interfaces de `vista` son las de la fase 2, sin cambios, salvo dos piezas que en Java también eran distintas en el móvil:
+  - `ClienteRest`: la dirección se puede cambiar mientras la app corre (propiedad `UrlBase`, el `setUrlBase` de Java).
+  - `ConfigServidor`: dirección de compilación más la guardada por el usuario.
+- **K2. Hilos (H11).** Como en Android, cada acción del controlador corre fuera del hilo principal (`Task.Run`). Las vistas cambian sus controles con `MainThread` (`vista/Hilos.cs`), y los diálogos bloquean ese hilo de fondo hasta que el usuario responde. Así las interfaces de vista siguen siendo síncronas.
+- **K3. Nombres de las pantallas.** El plan decía `vista/*Vista*.xaml`, pero ese nombre ya lo usan las interfaces del diagrama (`LoginVista`, `PaisVista`, ...). Los `Fragment` de Android pasan a ser `*Pantalla` (`LoginPantalla`, `PaisPantalla`, ...) y `FragmentoBase` pasa a `PantallaBase`. `PrincipalActivity` pasa a `PaginaPrincipal`. El resto de clases auxiliares conserva su nombre.
+- **K4. Dirección del servidor.**
+  - `gradle.properties` (`-Pservidor=...`) pasa a la propiedad `Servidor` del `.csproj` (`-p:Servidor=...`), que llega a la app como metadato del ensamblado.
+  - `SharedPreferences` pasa a `Preferences`.
+  - Por defecto, `http://10.0.2.2:5088/api`.
+  - La parte que usa `Preferences` va en `ConfigServidor.Preferencias.cs`, para que las pruebas (que corren sin MAUI) compilen el resto.
+- **K5. Diálogos.**
+  - MAUI no tiene el `MaterialAlertDialog` de Android. El formulario de país, las confirmaciones y «Cambiar servidor» son una capa de `PaginaPrincipal`, con el mismo título, texto y botones: «atrás» o tocar fuera cancela, y un error de validación deja el diálogo abierto.
+  - El menú «Editar / Eliminar» al tocar un país es el `DisplayActionSheetAsync` nativo, en lugar del `PopupMenu`.
+- **K6. Controles sin equivalente directo.**
+  - `TextInputLayout` pasa a `vista/Campo.cs`, con la etiqueta fija arriba en lugar de la etiqueta flotante. Conserva el ojo para ver la clave (`password_toggle`) y la «x» para borrar el texto en los campos de búsqueda (`clear_text`).
+  - El `ExposedDropdownMenu` de la región pasa a un `Picker`.
+  - El `LinearProgressIndicator` pasa a `vista/BarraProgreso.cs`.
+  - Los chips de región son botones con los colores de `chip_*.xml`. Tocar la región ya elegida no vuelve a consultar, como el `ChipGroup` con selección obligatoria.
+- **K7. Íconos.** Los vectores de `res/drawable` se convirtieron a SVG (`Resources/Images`), uno por color usado, porque MAUI no tiñe imágenes sin bibliotecas extra.
+- **K8. Identificador de la app.** Es `ec.edu.monster.countryapi.dotnet`, distinto del cliente Java (`ec.edu.monster.countryapi`), para poder tener las dos apps instaladas en el mismo emulador.
+- **K9. Estado al recrear la actividad.** Java guardaba la pantalla actual en `onSaveInstanceState`. Aquí la actividad declara los mismos `ConfigurationChanges` (girar, teclado, tema), así que no se recrea y no hace falta guardar el estado.
+- **K10. Pruebas.**
+  - Las 65 de Java, traducidas a xUnit en `pruebas/` (`net10.0`, sin emulador): las 49 del escritorio más `ConfigServidorTest`, que tiene 7 métodos y 16 casos.
+  - El proyecto de pruebas enlaza los `.cs` sin MAUI, en lugar de referenciar el proyecto Android.
+- **K11. Revisión en el emulador** (Pixel 7, API 36), contra el servidor .NET.
+  - Recorridos: inicio de sesión con error y correcto; menú; Países (lista, Editar, formulario, validación «Ingrese el nombre del país», Cancelar); Buscar y filtrar (Europa → 2 países); Reportes; Universidades; Importar (confirmación cancelada); Consultar en la API («ecuador» con REST Countries real y Guardar); sesión expirada al reiniciar el servidor; Cerrar sesión; «Cambiar servidor» con una dirección inválida.
+  - Si se maneja el emulador con teclas (`adb shell input keyevent`), Android sale del modo táctil y dibuja su resaltado de foco gris sobre la vista enfocada. Es normal de Android y desaparece al tocar la pantalla.
