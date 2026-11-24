@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ec.edu.monster</RootNamespace>
+    <AssemblyName>ESC_COUNTRYAPI_DOTNET_RESTFul</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Las pruebas viven en pruebas/ (proyecto xUnit aparte): se excluyen de la aplicación. -->
+  <ItemGroup>
+    <Compile Remove="pruebas\**" />
+    <Page Remove="pruebas\**" />
+    <None Remove="pruebas\**" />
+    <EmbeddedResource Remove="pruebas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Único archivo que se edita para apuntar el cliente a otro servidor (sin recompilar). -->
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ESC_COUNTRYAPI_DOTNET_RESTFul.Pruebas" />
+  </ItemGroup>
+
+</Project>

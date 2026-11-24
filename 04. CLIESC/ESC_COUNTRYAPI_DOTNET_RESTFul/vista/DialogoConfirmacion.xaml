@@ -1,0 +1,22 @@
+<!-- Confirmación con dos botones de texto propio (equivale a JOptionPane.showOptionDialog). Autor: Escobar Marcos -->
+<Window x:Class="ec.edu.monster.vista.DialogoConfirmacion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize" ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner" Background="{StaticResource Blanco}"
+        FontFamily="{StaticResource Fuente}" FontSize="14">
+    <StackPanel Margin="24,20">
+        <StackPanel Orientation="Horizontal">
+            <Border x:Name="Icono" Width="32" Height="32" CornerRadius="16" VerticalAlignment="Top">
+                <TextBlock x:Name="Simbolo" Foreground="White" FontWeight="Bold" FontSize="18"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <TextBlock x:Name="Mensaje" Margin="14,6,0,0" MaxWidth="420" TextWrapping="Wrap"
+                       Foreground="{StaticResource Texto}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button x:Name="Aceptar" Style="{StaticResource BotonPrimario}" Click="AlAceptar" />
+            <Button x:Name="Cancelar" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" IsCancel="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>

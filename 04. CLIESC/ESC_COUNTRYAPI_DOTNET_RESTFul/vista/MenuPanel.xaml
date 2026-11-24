@@ -1,0 +1,17 @@
+<!-- Menú principal con una tarjeta por opción. Autor: Escobar Marcos -->
+<vista:PanelBase x:Class="ec.edu.monster.vista.MenuPanel"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:vista="clr-namespace:ec.edu.monster.vista"
+                 Padding="24,20">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <TextBlock Text="Menú principal" Style="{StaticResource Titulo}" />
+            <TextBlock Text="Elija una opción." Style="{StaticResource Suave}" Margin="0,4,0,0" />
+            <vista:Alerta x:Name="AlertaPantalla" Margin="0,12,0,0" />
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <UniformGrid x:Name="Tarjetas" Columns="3" VerticalAlignment="Top" />
+        </ScrollViewer>
+    </DockPanel>
+</vista:PanelBase>

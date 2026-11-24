@@ -1,0 +1,9 @@
+<!-- Aviso dentro de la pantalla: verde para éxito, rojo para error. Autor: Escobar Marcos -->
+<UserControl x:Class="ec.edu.monster.vista.Alerta"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Visibility="Collapsed">
+    <Border x:Name="Marco" BorderThickness="4,1,1,1" Padding="12,10">
+        <TextBlock x:Name="Texto" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" />
+    </Border>
+</UserControl>

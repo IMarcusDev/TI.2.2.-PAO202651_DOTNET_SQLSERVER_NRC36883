@@ -1,0 +1,55 @@
+<!-- Reportes estadísticos (ECUD6). Autor: Escobar Marcos -->
+<vista:PanelBase x:Class="ec.edu.monster.vista.ReportePanel"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:vista="clr-namespace:ec.edu.monster.vista"
+                 Padding="24,20">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <TextBlock Text="Reportes" Style="{StaticResource Titulo}" />
+            <TextBlock Text="Estadísticas calculadas sobre los países almacenados." Style="{StaticResource Suave}"
+                       Margin="0,4,0,0" />
+            <vista:Alerta x:Name="AlertaPantalla" Margin="0,12,0,0" />
+        </StackPanel>
+        <Button x:Name="Actualizar" DockPanel.Dock="Top" Content="Actualizar" Style="{StaticResource BotonSecundario}"
+                HorizontalAlignment="Left" Margin="0,0,0,12" />
+        <Border DockPanel.Dock="Top" Style="{StaticResource CajaCifra}" Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="País más poblado" Style="{StaticResource Subtitulo}" />
+                <TextBlock x:Name="MasPoblado" Text="—" Style="{StaticResource Cifra}" />
+                <TextBlock x:Name="PoblacionMasPoblado" Text=" " Style="{StaticResource Suave}" />
+            </StackPanel>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" VerticalAlignment="Top">
+                <TextBlock DockPanel.Dock="Top" Text="Cantidad de países por región" Style="{StaticResource Subtitulo}"
+                           Margin="0,0,0,8" />
+                <DataGrid x:Name="Conteo" Style="{StaticResource Tabla}" Height="230">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Región" Binding="{Binding Region}" Width="*" />
+                        <DataGridTextColumn Header="Países" Width="*" SortMemberPath="Cantidad"
+                                            Binding="{Binding Cantidad, Converter={StaticResource FormatoNumero}}"
+                                            HeaderStyle="{StaticResource EncabezadoNumero}" ElementStyle="{StaticResource TextoNumero}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+            <DockPanel Grid.Column="2" VerticalAlignment="Top">
+                <TextBlock DockPanel.Dock="Top" Text="Promedio poblacional por región" Style="{StaticResource Subtitulo}"
+                           Margin="0,0,0,8" />
+                <DataGrid x:Name="Promedio" Style="{StaticResource Tabla}" Height="230">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Región" Binding="{Binding Region}" Width="*" />
+                        <DataGridTextColumn Header="Promedio de población" Width="*" SortMemberPath="PromedioPoblacion"
+                                            Binding="{Binding PromedioPoblacion, Converter={StaticResource FormatoNumero}}"
+                                            HeaderStyle="{StaticResource EncabezadoNumero}" ElementStyle="{StaticResource TextoNumero}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</vista:PanelBase>

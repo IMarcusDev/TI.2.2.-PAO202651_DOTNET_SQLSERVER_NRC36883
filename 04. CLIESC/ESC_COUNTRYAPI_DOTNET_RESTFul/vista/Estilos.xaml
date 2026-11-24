@@ -1,0 +1,284 @@
+<!--
+    Paleta, fuentes y estilos compartidos por las pantallas WPF (equivale a Estilos.java del
+    cliente Swing). Los colores son los del diseño de referencia (estilos.css del cliente web de
+    EXAMEN). Autor: Escobar Marcos
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vista="clr-namespace:ec.edu.monster.vista">
+
+    <!-- ============================================================ paleta -->
+    <Color x:Key="ColorAzul">#1F4E79</Color>
+    <Color x:Key="ColorAzulOscuro">#183D60</Color>
+    <Color x:Key="ColorAzulClaro">#E8EFF7</Color>
+    <Color x:Key="ColorFondo">#F3F4F6</Color>
+    <Color x:Key="ColorTexto">#1F2933</Color>
+    <Color x:Key="ColorTextoSuave">#4B5563</Color>
+    <Color x:Key="ColorBorde">#D1D5DB</Color>
+    <Color x:Key="ColorVerde">#22C55E</Color>
+    <Color x:Key="ColorVerdeClaro">#E9F9EF</Color>
+    <Color x:Key="ColorVerdeTexto">#166534</Color>
+    <Color x:Key="ColorRojo">#B91C1C</Color>
+    <Color x:Key="ColorRojoClaro">#FDECEC</Color>
+
+    <SolidColorBrush x:Key="Azul" Color="{StaticResource ColorAzul}" />
+    <SolidColorBrush x:Key="AzulOscuro" Color="{StaticResource ColorAzulOscuro}" />
+    <SolidColorBrush x:Key="AzulClaro" Color="{StaticResource ColorAzulClaro}" />
+    <SolidColorBrush x:Key="Fondo" Color="{StaticResource ColorFondo}" />
+    <SolidColorBrush x:Key="Texto" Color="{StaticResource ColorTexto}" />
+    <SolidColorBrush x:Key="TextoSuave" Color="{StaticResource ColorTextoSuave}" />
+    <SolidColorBrush x:Key="Borde" Color="{StaticResource ColorBorde}" />
+    <SolidColorBrush x:Key="Verde" Color="{StaticResource ColorVerde}" />
+    <SolidColorBrush x:Key="VerdeClaro" Color="{StaticResource ColorVerdeClaro}" />
+    <SolidColorBrush x:Key="VerdeTexto" Color="{StaticResource ColorVerdeTexto}" />
+    <SolidColorBrush x:Key="Rojo" Color="{StaticResource ColorRojo}" />
+    <SolidColorBrush x:Key="RojoClaro" Color="{StaticResource ColorRojoClaro}" />
+    <SolidColorBrush x:Key="Blanco" Color="White" />
+
+    <FontFamily x:Key="Fuente">Segoe UI</FontFamily>
+
+    <vista:FormatoNumero x:Key="FormatoNumero" />
+    <vista:SiNo x:Key="SiNo" />
+
+    <!-- ============================================================ textos -->
+    <Style x:Key="Titulo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource Azul}" />
+    </Style>
+    <Style x:Key="Subtitulo" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource Azul}" />
+    </Style>
+    <Style x:Key="Suave" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource TextoSuave}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="Etiqueta" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource Texto}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="Cifra" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource Azul}" />
+    </Style>
+
+    <!-- ============================================================ entradas -->
+    <Style TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Fuente}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{StaticResource Texto}" />
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Borde}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style TargetType="PasswordBox">
+        <Setter Property="FontFamily" Value="{StaticResource Fuente}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{StaticResource Texto}" />
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Borde}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style TargetType="ComboBox">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="8,6" />
+    </Style>
+
+    <!-- ============================================================ botones -->
+    <!-- Plantilla común: fondo plano, borde de un píxel y texto en negrita. -->
+    <Style x:Key="BotonBase" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Fuente}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="16,7" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Marco" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="Center" RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Marco" Property="Opacity" Value="0.88" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Marco" Property="BorderBrush" Value="{StaticResource AzulOscuro}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Marco" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="BotonPrimario" TargetType="Button" BasedOn="{StaticResource BotonBase}">
+        <Setter Property="Background" Value="{StaticResource Azul}" />
+        <Setter Property="Foreground" Value="{StaticResource Blanco}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Azul}" />
+    </Style>
+    <Style x:Key="BotonSecundario" TargetType="Button" BasedOn="{StaticResource BotonBase}">
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="Foreground" Value="{StaticResource Azul}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Borde}" />
+    </Style>
+    <Style x:Key="BotonPeligro" TargetType="Button" BasedOn="{StaticResource BotonBase}">
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="Foreground" Value="{StaticResource Rojo}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Rojo}" />
+    </Style>
+    <!-- Botón plano de la barra superior azul. -->
+    <Style x:Key="BotonBarra" TargetType="Button" BasedOn="{StaticResource BotonBase}">
+        <Setter Property="Background" Value="{StaticResource Azul}" />
+        <Setter Property="Foreground" Value="{StaticResource Blanco}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Azul}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <!-- Tarjeta del menú principal: borde gris que se vuelve azul con el ratón o el foco. -->
+    <Style x:Key="TarjetaMenu" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Marco" Background="{TemplateBinding Background}"
+                            BorderBrush="{StaticResource Borde}" BorderThickness="1" Padding="18">
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Marco" Property="BorderBrush" Value="{StaticResource Azul}" />
+                            <Setter TargetName="Marco" Property="BorderThickness" Value="2" />
+                            <Setter TargetName="Marco" Property="Padding" Value="17" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Marco" Property="BorderBrush" Value="{StaticResource Azul}" />
+                            <Setter TargetName="Marco" Property="BorderThickness" Value="2" />
+                            <Setter TargetName="Marco" Property="Padding" Value="17" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- «Chip» de región: azul cuando está elegido. -->
+    <Style x:Key="Chip" TargetType="RadioButton">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="6,0,0,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="Marco" Background="{StaticResource Blanco}" BorderBrush="{StaticResource Borde}"
+                            BorderThickness="1" Padding="14,5">
+                        <TextBlock x:Name="Texto" Text="{TemplateBinding Content}" Foreground="{StaticResource Azul}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Marco" Property="Background" Value="{StaticResource Azul}" />
+                            <Setter TargetName="Marco" Property="BorderBrush" Value="{StaticResource Azul}" />
+                            <Setter TargetName="Texto" Property="Foreground" Value="{StaticResource Blanco}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ============================================================ tarjetas -->
+    <!-- Panel blanco con borde gris, como las tarjetas del diseño web. -->
+    <Style x:Key="Tarjeta" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Borde}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+    <!-- Caja de cifra: tarjeta con el borde izquierdo azul más grueso. -->
+    <Style x:Key="CajaCifra" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Azul}" />
+        <Setter Property="BorderThickness" Value="4,1,1,1" />
+        <Setter Property="Padding" Value="16,14" />
+    </Style>
+
+    <!-- ============================================================ tablas -->
+    <!-- Tabla con encabezado celeste, filas alternas y números alineados a la derecha. -->
+    <Style x:Key="EncabezadoTabla" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{StaticResource AzulClaro}" />
+        <Setter Property="Foreground" Value="{StaticResource Azul}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="BorderBrush" Value="{StaticResource Borde}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+    </Style>
+    <Style x:Key="EncabezadoNumero" TargetType="DataGridColumnHeader" BasedOn="{StaticResource EncabezadoTabla}">
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+    </Style>
+    <Style x:Key="Celda" TargetType="DataGridCell">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Background="{TemplateBinding Background}" Padding="8,0">
+                        <ContentPresenter VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource AzulClaro}" />
+                <Setter Property="Foreground" Value="{StaticResource Texto}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="TextoNumero" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+    <Style x:Key="Tabla" TargetType="DataGrid">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{StaticResource Texto}" />
+        <Setter Property="Background" Value="{StaticResource Blanco}" />
+        <Setter Property="RowBackground" Value="{StaticResource Blanco}" />
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource Fondo}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Borde}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="RowHeight" Value="28" />
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource Borde}" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource EncabezadoTabla}" />
+        <Setter Property="CellStyle" Value="{StaticResource Celda}" />
+    </Style>
+</ResourceDictionary>
